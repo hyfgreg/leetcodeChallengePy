@@ -39,11 +39,28 @@ s由英文字母、数字、符号和空格组成
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
+        left = 0
+        right = 0
         length = len(s)
-        if length <= 1:
-            return length
-        head = 0
-        tail = 1
-        l = 0
-        while head < length and tail < length:
-            pass
+        max_len = 0
+        window = {}
+        while right < length:
+            c = s[right]
+            if c in window:
+                window[c] += 1
+            else:
+                window[c] = 1
+            right += 1
+            while window[c] > 1:
+                d = s[left]
+                left += 1
+                window[d] -= 1
+            max_len = max(max_len, right - left)
+        return max_len
+
+
+if __name__ == '__main__':
+    a = ['abcabcbb', 'bbbbb', 'pwwkew', '']
+    test = Solution()
+    for s in a:
+        print(s, test.lengthOfLongestSubstring(s))
