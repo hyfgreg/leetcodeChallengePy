@@ -43,4 +43,18 @@ from typing import List
 
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        pass
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        _max = dp[0]
+        for index, num in enumerate(nums[1:]):
+            index += 1
+            dp[index] = max(num, dp[index - 1] + num)
+            if dp[index] > _max:
+                _max = dp[index]
+        return _max
+
+
+if __name__ == '__main__':
+    nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+    s = Solution()
+    print(s.maxSubArray(nums))
