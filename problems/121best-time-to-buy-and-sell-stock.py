@@ -84,16 +84,33 @@ class Solution2:
         print(0, 0, prices[0], dp[0][0][0], dp[0][0][1])
         print(0, 1, prices[0], dp[0][1][0], dp[0][1][1])
         for i in range(1, len(prices)):
+            dp[i][1][0] = max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i])
+            dp[i][1][1] = max(dp[i - 1][1][1], dp[i - 1][0][0] - prices[i])
+            dp[i][2][0] = max(dp[i - 1][2][0], dp[i - 1][2][1] + prices[i])
+            dp[i][2][1] = max(dp[i - 1][2][1], dp[i - 1][1][0] - prices[i])
+            # for j in range(1, 3):
+            #     dp[i][j][0] = max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
+            #     dp[i][j][1] = max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+            #     print(i, j, prices[i], dp[i][j][0], dp[i][j][1])
+
+        return dp[-1][2][0]
+
+    def max_profit(self, prices: List[int]) -> int:
+        one_time0 = 0
+        one_time1 = -prices[0]
+        two_times0 = 0
+        two_times1 = -prices[0]
+        for i in range(1, len(prices)):
+            one_time0 = max(one_time0, one_time1 + prices[i])
+            one_time1 = max(one_time1, -prices[i])
+            two_times0 = max(two_times0, two_times1 + prices[i])
+            two_times1 = max(two_times1, one_time0 - prices[i])
             # dp[i][1][0] = max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i])
             # dp[i][1][1] = max(dp[i - 1][1][1], dp[i - 1][0][0] - prices[i])
             # dp[i][2][0] = max(dp[i - 1][2][0], dp[i - 1][2][1] + prices[i])
             # dp[i][2][1] = max(dp[i - 1][2][1], dp[i - 1][1][0] - prices[i])
-            for j in range(1, 3):
-                dp[i][j][0] = max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
-                dp[i][j][1] = max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
-                print(i, j, prices[i], dp[i][j][0], dp[i][j][1])
 
-        return dp[-1][2][0]
+        return two_times0
 
 
 class Solution:
@@ -135,5 +152,5 @@ if __name__ == '__main__':
     # print(s.maxProfit(prices, 2))
     s = Solution2()
     prices = [3, 3, 5, 0, 0, 3, 1, 4]
-    prices = [1, 2, 3, 4, 5]
-    print(s.maxProfit(prices))
+    # prices = [1, 2, 3, 4, 5]
+    print(s.max_profit(prices))
