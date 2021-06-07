@@ -28,10 +28,112 @@
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+题解: https://leetcode-cn.com/circle/article/qiAgHn/
 """
 from typing import List
 
 
+class SolutionK:
+    def maxProfit(self, prices: List[int], k: int):
+        """
+        dp[i][k][0/1]: i 第几天, k 最多k次交易, 0/1第i天没有持有/持有股票
+
+        dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + price[i]) # 1. 今天什么都没做，和昨天保持一致(昨天结束时也是没有卖，且已经到了k) 2. 今天卖了(昨天结束时必然持有股票)
+        dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - price[i]) # 1. 今天什么都没做，和昨天保持一致(昨天结束时卖了，且已经到了k) 2. 今天买入(昨天结束时必然没有持有股票)
+
+        dp[-1][k][0] = 0
+        dp[-1][k][1] = -infinity
+
+        dp[i][0][0] = 0
+        dp[i][0][1] = -infinity
+        """
+        dp = []
+        for i in range(len(prices)):
+            tmp = []
+            for j in range(k + 1):
+                if i == 0 and j == 1:
+                    tmp.append([0, -prices[i]])
+                else:
+                    tmp.append([0, float('-inf')])
+            dp.append(tmp)
+
+        for i in range(1, len(prices)):
+            for j in range(1, k + 1):
+                for state in [0, 1]:
+                    if state == 0:
+                        dp[i][j][0] = max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
+                    elif state == 1:
+                        dp[i][j][1] = max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+
+        return dp[-1][k][0]
+
+
+class Solution2:
+    def maxProfit(self, prices: List[int]) -> int:
+        dp = []
+        for i in range(len(prices)):
+            tmp = []
+            for j in range(3):
+                if i == 0:
+                    tmp.append([0, -prices[i]])
+                else:
+                    tmp.append([0, float('-inf')])
+            dp.append(tmp)
+        print('i j price')
+        print(0, 0, prices[0], dp[0][0][0], dp[0][0][1])
+        print(0, 1, prices[0], dp[0][1][0], dp[0][1][1])
+        for i in range(1, len(prices)):
+            # dp[i][1][0] = max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i])
+            # dp[i][1][1] = max(dp[i - 1][1][1], dp[i - 1][0][0] - prices[i])
+            # dp[i][2][0] = max(dp[i - 1][2][0], dp[i - 1][2][1] + prices[i])
+            # dp[i][2][1] = max(dp[i - 1][2][1], dp[i - 1][1][0] - prices[i])
+            for j in range(1, 3):
+                dp[i][j][0] = max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i])
+                dp[i][j][1] = max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i])
+                print(i, j, prices[i], dp[i][j][0], dp[i][j][1])
+
+        return dp[-1][2][0]
+
+
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        pass
+        """
+        dp[i][0][0] = 0
+        dp[i][0][1] = -infinity
+
+        dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])
+        dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][0][0] - prices[i]) -> max(dp[i-1][1][1], - prices[i])
+        """
+        # dp = []
+        # for i in range(len(prices)):
+        #     dp.append([0, 0])
+        #
+        # dp[0][1] = -prices[0]
+        #
+        # for i in range(1, len(prices)):
+        #     dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+        #     dp[i][1] = max(dp[i-1][1], - prices[i])
+        # return dp[-1][0]
+
+        p0 = 0
+        p1 = -prices[0]
+        print(0, prices[0], p0, p1)
+        for i in range(1, len(prices)):
+            p0 = max(p0, p1 + prices[i])
+            p1 = max(p1, -prices[i])
+            print(i, prices[i], p0, p1)
+        return p0
+
+
+if __name__ == '__main__':
+    # s = Solution()
+    # prices = [7, 1, 5, 3, 6, 4]
+    # print(s.maxProfit(prices))
+    # s = SolutionK()
+    # prices = [3, 3, 5, 0, 0, 3, 1, 4]
+    # print(s.maxProfit(prices, 2))
+    s = Solution2()
+    prices = [3, 3, 5, 0, 0, 3, 1, 4]
+    prices = [1, 2, 3, 4, 5]
+    print(s.maxProfit(prices))
