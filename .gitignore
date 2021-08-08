@@ -113,3 +113,4 @@ db.sqlite3
 data_init.py
 test/
 temp_folder/
+%SystemDrive%/
