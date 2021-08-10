@@ -90,9 +90,59 @@ s 由英文字母（大写和小写）、数字（0-9）、' '、'+'、'-' 和 '
 通过次数324,695提交次数1,499,681
 
 tag: 字符串
+
+学习 deterministic finite automaton, DFA 有限状态自动机
+
 """
 
 
 class Solution:
     def myAtoi(self, s: str) -> int:
-        pass
+        minimum = -1 << 31
+        maximum = (1 << 31) - 1
+        zero = ord("0")
+        nine = ord("9")
+        length = len(s)
+        if length == 0:
+            return 0
+        i = 0
+        flag = 1
+        while i < length:
+            ch = s[i]
+            if ch == " ":
+                i += 1
+            elif ch == "-":
+                flag = -1
+                i += 1
+                break
+            elif ch == "+":
+                i += 1
+                break
+            elif zero <= ord(ch) <= nine:
+                break
+            else:
+                return 0
+
+        integer = 0
+        while i < length:
+            ch = s[i]
+            if zero <= ord(ch) <= nine:
+                num = ord(ch) - zero
+                integer = integer * 10 + num
+                if flag==1 and integer >= maximum:
+                    return maximum
+                elif flag==-1 and flag * integer <= minimum:
+                    return minimum
+            else:
+                break
+            i += 1
+        return flag * integer
+
+
+if __name__ == '__main__':
+    a = "123.123"
+    # a = "+123.123"
+    # a = "-123.123"
+    a = "00000-42a1234"
+    s = Solution()
+    print(s.myAtoi(a))
