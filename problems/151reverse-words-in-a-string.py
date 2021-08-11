@@ -56,4 +56,45 @@ tag: 双指针 字符串
 
 class Solution:
     def reverseWords(self, s: str) -> str:
-        pass
+        ret = []
+        index = 0
+        space_buffer = None
+        status = "start"
+        while index < len(s):
+            ch = s[index]
+            if ch.isspace():
+                if status == "start":
+                    index += 1
+                    continue
+                if space_buffer is None:
+                    space_buffer = ch
+            else:
+                if status == "start":
+                    status = "word"
+                if space_buffer is not None:
+                    ret.append(space_buffer)
+                    space_buffer = None
+                ret.append(ch)
+            index += 1
+
+        left, right = 0, len(ret) - 1
+        self._reverse(ret, left, right)
+        for right in range(len(ret)):
+            if ret[right].isspace():
+                self._reverse(ret, left, right - 1)
+                left = right + 1
+        self._reverse(ret, left, right)
+        return ''.join(ret)
+
+    def _reverse(self, s: list[str], left: int, right: int) -> None:
+        while 0 <= left < right:
+            s[left], s[right] = s[right], s[left]
+            left += 1
+            right -= 1
+
+
+if __name__ == '__main__':
+    s = "the sky is blue"
+    s = "  hello world  "
+    x = Solution()
+    print(x.reverseWords(s))
