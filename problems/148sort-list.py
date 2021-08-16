@@ -91,6 +91,35 @@ class Solution:
             # print("=====" * 10)
         return dummy.next
 
+    def sortListRecursive(self, head: ListNode) -> ListNode:
+        return self.sort_list(head, None)
+
+    def sort_list(self, head, tail):
+        # cannot get tail, before tail it ends
+        # print("sort", head.val if head else None, tail.val if tail else None)
+        if head is None:
+            return head
+        if head.next == tail:
+            # print("head.next==tail")
+            head.next = None  # 这一步非常重要，否则merge方法合并的链表是错误的
+            return head
+        # print("find mid")
+        slow, fast = head, head
+        while fast != tail:
+            # 快慢指针求链表中点，背诵
+            slow = slow.next
+            fast = fast.next
+            if fast == tail:
+                break
+            fast = fast.next
+        mid = slow
+        # mid.next = None
+        left = self.sort_list(head, mid)
+        # print("sort", head.val if head else None, mid.val if mid else None, 'return')
+        right = self.sort_list(mid, tail)
+        # print("sort", mid.val if mid else None, tail.val if tail else None, 'return')
+        return self.merge(left, right)
+
     def merge(self, head1, head2):
         if not head2:
             return head1
@@ -126,10 +155,10 @@ def create_list(l):
 
 
 if __name__ == '__main__':
-    head = [-1, 5, 3, 4, 0]
+    head = [4, 19, 14, 5, -3, 1, 8, 5, 11, 15]
     head = create_list(head)
     s = Solution()
-    head = s.sortList(head)
+    head = s.sortListRecursive(head)
     while head:
         print(head.val)
         head = head.next
