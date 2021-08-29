@@ -26,6 +26,25 @@ from typing import List
 
 
 class Solution:
+    def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+        m = len(nums1)
+        n = len(nums2)
+        dp = []
+        length = 0
+
+        for i in range(m + 1):
+            _ = []
+            for j in range(n + 1):
+                _.append(0)
+            dp.append(_)
+
+        for i in range(m - 1, -1, -1):
+
+            for j in range(n - 1, -1, -1):
+                dp[i][j] = (dp[i + 1][j + 1] + 1) if nums1[i] == nums2[j] else 0
+                length = max(dp[i][j], length)
+        return length
+
     def findLengthFoolish(self, nums1: List[int], nums2: List[int]) -> int:
         sub_list1 = self.get_sub_list(nums1)
         sub_list2 = self.get_sub_list(nums2)
@@ -55,8 +74,9 @@ class Solution:
                 ret.append(tmp)
         return ret
 
+
 if __name__ == '__main__':
-    nums1 = [1,2,3,2,1]
-    nums2 = [3,2,1,4,7]
+    nums1 = [1, 2, 3, 2, 1]
+    nums2 = [3, 2, 1, 4, 7]
     s = Solution()
-    print(s.findLengthFoolish(nums1,nums2))
+    print(s.findLength(nums1, nums2))
