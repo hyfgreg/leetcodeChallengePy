@@ -30,6 +30,30 @@ tag: 数组 动态规划 矩阵
 """
 from typing import List
 
+
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        pass
+        m = len(grid)
+        n = len(grid[0])
+        dp = [[0 for _ in range(n)] for _ in range(m)]
+        dp[0][0] = grid[0][0]
+        for i in range(1, n):
+            dp[0][i] = dp[0][i - 1] + grid[0][i]
+        for j in range(1, m):
+            dp[j][0] = dp[j - 1][0] + grid[j][0]
+
+        # print(dp)
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+
+        return dp[m-1][n-1]
+
+
+if __name__ == '__main__':
+    grid = [[1, 3, 1], [1, 5, 1], [4, 2, 1]]
+    # print(grid)
+    s = Solution()
+    print(s.minPathSum(grid))
+    grid = [[1, 2, 3], [4, 5, 6]]
+    print(s.minPathSum(grid))
