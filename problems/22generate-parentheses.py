@@ -25,10 +25,34 @@ n = 2
 通过次数334,018提交次数432,405
 
 tag: 字符串 动态规划 回溯
+
+背诵
 """
 from typing import List
 
 
 class Solution:
+    ret = []
+
     def generateParenthesis(self, n: int) -> List[str]:
-        pass
+        self.parent('', n, n)
+        return self.ret
+
+    def parent(self, ans: str, left: int, right: int):
+        if left == right == 0:
+            self.ret.append(ans)
+            return
+        if left != 0 and right == 0:
+            return
+        if left == right:
+            return self.parent(ans + '(', left - 1, right)
+        if left == 0:
+            return self.parent(ans + ')', left, right - 1)
+        self.parent(ans + '(', left - 1, right)
+        self.parent(ans + ')', left, right - 1)
+
+
+if __name__ == '__main__':
+    s = Solution()
+    n = 1
+    print(s.generateParenthesis(1))
