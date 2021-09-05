@@ -51,5 +51,80 @@ tag: 字符串
 
 
 class Solution:
+    decimal_characters = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    hex_characters = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'}
+
     def validIPAddress(self, IP: str) -> str:
-        pass
+        Neither = 'Neither'
+        IPv4 = 'IPv4'
+        IPv6 = 'IPv6'
+        last_number = None
+        count = 0
+        version = None
+
+        def valid(version, number, count, end=False):
+            if version == IPv4:
+                if count > 3:
+                    return Neither
+                if end and count != 3:
+                    return Neither
+                if len(number) > 3:
+                    return Neither
+                if len(number) > 1 and number[0] == '0':
+                    return Neither
+                value = 0
+                for n in number:
+                    if n not in self.decimal_characters:
+                        return Neither
+                    value = value * 10 + int(n)
+                if value > 255:
+                    return Neither
+            else:
+                if count > 7:
+                    return Neither
+                if end and count != 7:
+                    return Neither
+                if len(number) > 4:
+                    return Neither
+                for n in number:
+                    if n not in self.hex_characters:
+                        return Neither
+
+        for number in self.split(IP):
+            print(number)
+            if not number:
+                return Neither
+            if number == '.' or number == ':':
+                if version is None:
+                    version = IPv4 if number == '.' else IPv6
+                else:
+                    if version == IPv4 and number == ':':
+                        return Neither
+                    if version == IPv6 and number == '.':
+                        return Neither
+                count += 1
+                res = valid(version, last_number, count)
+                if res:
+                    return res
+            else:
+                last_number = number
+        else:
+            res = valid(version, last_number, count, True)
+            if res:
+                return res
+        return version
+
+    def split(self, IP: str):
+        start = 0
+        for i, ch in enumerate(IP):
+            if ch == ":" or ch == ".":
+                yield IP[start:i].lower()
+                yield IP[i]
+                start = i + 1
+        yield IP[start:].lower()
+
+
+if __name__ == '__main__':
+    IP = "20EE:Fb8:85a3:0:0:8A2E:0370:AA4"
+    s = Solution()
+    print(s.validIPAddress(IP))
