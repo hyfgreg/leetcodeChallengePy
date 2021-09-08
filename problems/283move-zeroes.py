@@ -34,6 +34,7 @@ class Solution:
                 nums[zero], nums[p] = nums[p], nums[zero]
 
     def moveZeroes2(self, nums: List[int]) -> None:
+        # 背诵?
         left, right = 0, 0
         while right < len(nums):
             if nums[right] != 0:
