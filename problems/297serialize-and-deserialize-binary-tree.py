@@ -55,7 +55,29 @@ class Codec:
         :type root: TreeNode
         :rtype: str
         """
-        pass
+        if not root:
+            return 'null'
+        q = deque()
+        q.appendleft(root)
+        ret = []
+        valid = True
+        while q and valid:
+            sz = len(q)
+            valid = False
+            for _ in range(sz):
+                node = q.pop()
+                if node is not None:
+                    ret.append(str(node.val))
+                else:
+                    ret.append("null")
+                if node:
+                    if node.left:
+                        valid = True
+                    q.appendleft(node.left)
+                    if node.right:
+                        valid = True
+                    q.appendleft(node.right)
+        return ','.join(ret)
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -63,7 +85,32 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        pass
+        data = [int(i) if i != 'null' else None for i in data.split(',')]
+        nodes = [TreeNode(i) if i is not None else None for i in data]
+        q = deque()
+        if nodes[0] is not None:
+            q.appendleft(nodes[0])
+        index = 0
+        while q and index < len(nodes):
+            sz = len(q)
+            for _ in range(sz):
+                root = q.pop()
+                index += 1
+                if index == len(nodes):
+                    break
+                if nodes[index] is not None:
+                    root.left = nodes[index]
+                    q.appendleft(nodes[index])
+                index += 1
+                if index == len(nodes):
+                    break
+                if nodes[index] is not None:
+                    root.right = nodes[index]
+                    q.appendleft(nodes[index])
+        return nodes[0]
+
+    # def _deserialize(self, nodes, start, count):
+    #     pass
 
 
 def print_tree(root: TreeNode):
@@ -73,7 +120,18 @@ def print_tree(root: TreeNode):
     print_tree(root.left)
     print_tree(root.right)
 
+
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
 # deser = Codec()
 # ans = deser.deserialize(ser.serialize(root))
+
+if __name__ == '__main__':
+    codec = Codec()
+    # data = "1,2,3,null,null,null,4,5"
+    # root = codec.deserialize(data)
+    # print_tree(root)
+    data = "1,2,3,null,4,5,6,7,8,null,9,null,10"
+    print(data)
+    root = codec.deserialize(data)
+    print(codec.serialize(root))
