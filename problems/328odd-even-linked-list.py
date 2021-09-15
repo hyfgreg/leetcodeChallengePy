@@ -31,4 +31,38 @@ class ListNode:
 
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
-        pass
+        # 拆分链表
+        if not head or not head.next:
+            return head
+        odd_pre = ListNode(-1)
+        odd = odd_pre
+        even_pre = ListNode(-1)
+        even = even_pre
+        i = 1
+        while head:
+            if i % 2 == 1:
+                odd.next = head
+                odd = odd.next
+            else:
+                even.next = head
+                even = even.next
+            head = head.next
+            i += 1
+        odd.next = even_pre.next
+        if even.next:
+            even.next = None
+        return odd_pre.next
+
+
+def print_list_node(root: ListNode):
+    while root:
+        print(root.val)
+        root = root.next
+
+
+if __name__ == '__main__':
+    s = Solution()
+    root = ListNode(1, ListNode(2, ListNode(3, ListNode(4))))
+    print_list_node(root)
+    root = s.oddEvenList(root)
+    print_list_node(root)
