@@ -27,6 +27,8 @@
 通过次数214,597提交次数569,791
 
 tag: 递归 数学
+背诵，快速幂
+在二进制数为1的位做贡献!
 """
 
 
@@ -34,19 +36,22 @@ class Solution:
     def myPow(self, x: float, n: int) -> float:
         if n == 0:
             return 1.0
+        if n == 1:
+            # print("return")
+            return x
         negative = n < 0
         n = abs(n)
-        ret = x
-        while n > 1:
-            ret *= x
-            n -= 1
-        if negative:
-            ret = 1 / ret
-        return ret
+        ret = 1.0
+        while n > 0:
+            if n & 1 == 1:
+                ret *= x
+            x *= x
+            n = n >> 1
+        return ret if not negative else 1 / ret
 
 
 if __name__ == '__main__':
     s = Solution()
-    x = 2.00000
-    n = 10
+    x = 2
+    n = 9
     print(s.myPow(x, n))
