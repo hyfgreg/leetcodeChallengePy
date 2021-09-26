@@ -50,4 +50,23 @@ from typing import List
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
         # todo
-        pass
+        if len(nums) == 1:
+            return 0
+        tmp = [0]
+        for i in nums:
+            tmp.append(tmp[-1] + i)
+        for i in range(len(nums)):
+            left = tmp[i]
+            right = tmp[-1] - tmp[i + 1]
+            if left == right:
+                return i
+        return -1
+
+if __name__ == '__main__':
+    s = Solution()
+    nums = [1, 7, 3, 6, 5, 6]
+    print(s.pivotIndex(nums))
+    nums = [1, 2, 3]
+    print(s.pivotIndex(nums))
+    nums = [2, 1, -1]
+    print(s.pivotIndex(nums))
