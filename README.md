@@ -8,4 +8,5 @@ followed by [https://codetop.cc/#/home](https://codetop.cc/#/home)
 4. -[x] [146. LRU缓存机制](https://leetcode-cn.com/problems/lru-cache/submissions/)
 5. -[x] [912. 数组排序](https://leetcode-cn.com/problems/sort-an-array/)
 6. -[x] [146. K个一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/)
-    
+
+# reborn at 20240830
