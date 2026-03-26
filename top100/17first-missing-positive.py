@@ -1,0 +1,58 @@
+"""41. 缺失的第一个正数
+困难
+相关标签
+premium lock icon
+相关企业
+提示
+给你一个未排序的整数数组 nums ，请你找出其中没有出现的最小的正整数。
+
+请你实现时间复杂度为 O(n) 并且只使用常数级别额外空间的解决方案。
+
+
+示例 1：
+
+输入：nums = [1,2,0]
+输出：3
+解释：范围 [1,2] 中的数字都在数组中。
+示例 2：
+
+输入：nums = [3,4,-1,1]
+输出：2
+解释：1 在数组中，但 2 没有。
+示例 3：
+
+输入：nums = [7,8,9,11,12]
+输出：1
+解释：最小的正数 1 没有出现。
+
+
+提示：
+
+1 <= nums.length <= 105
+-231 <= nums[i] <= 231 - 1
+
+面试中遇到过这道题?
+1/5
+是
+否
+通过次数
+731,205/1.5M
+通过率
+49.1%
+相关标签
+数组
+哈希表
+"""
+
+from typing import List
+
+
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        pass
+
+
+if __name__ == "__main__":
+    nums = [1, 2, 0]
+    solu = Solution()
+    print(solu.firstMissingPositive(nums))
