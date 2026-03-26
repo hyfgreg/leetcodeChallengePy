@@ -46,13 +46,45 @@ premium lock icon
 
 from typing import List
 
+"""
+思路：把数字x放到对应的索引上去(x-1)
+我觉得swap的方法更符合我的逻辑。。。
+"""
+
 
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
-        pass
+        big = len(nums) + 1
+        for i in range(len(nums)):
+            if nums[i] <= 0:
+                nums[i] = big
+
+        # print(nums)
+        for i in range(len(nums)):
+            idx = abs(nums[i])
+            if idx < big and nums[idx - 1] > 0:
+                nums[idx - 1] = -nums[idx - 1]
+        # print(nums)
+        for i in range(len(nums)):
+            if nums[i] > 0:
+                return i + 1
+        return big
+
+    def firstMissingPositiveSwap(self, nums: List[int]) -> int:
+        for i in range(len(nums)):
+            while 1 <= nums[i] <= len(nums) and nums[nums[i] - 1] != nums[i]:
+                nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+        # print(nums)
+        for i in range(len(nums)):
+            if nums[i] != i + 1:
+                return i + 1
+        return len(nums) + 1
 
 
 if __name__ == "__main__":
     nums = [1, 2, 0]
+    # nums = [3, 4, -1, 1]
+    # nums = [7, 8, 9, 11, 12]
+    # nums = [1, 1]
     solu = Solution()
-    print(solu.firstMissingPositive(nums))
+    print(solu.firstMissingPositiveSwap(nums))
