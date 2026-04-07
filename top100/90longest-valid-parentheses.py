@@ -88,7 +88,7 @@ class Solution:
                         + 2
                         + (dp[i - dp[i - 1] - 2] if i - dp[i - 1] - 2 else 0)
                     )
-        print(dp)
+        # print(dp)
         return max(dp)
 
 if __name__ == "__main__":
